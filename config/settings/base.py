@@ -38,7 +38,7 @@ USE_TZ = True
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    'default': env.db('DATABASE_URL'),
+    'default': env.db('DATABASE_URL', default='postgres://postgres:postgres@localhost:5432/mp_resource')
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 
@@ -66,11 +66,12 @@ THIRD_PARTY_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'oauth2_provider',
     'rest_framework',
 ]
 LOCAL_APPS = [
     'mp_resource.users.apps.UsersConfig',
-    # Your stuff: custom apps go here
+    'mp_resource.playgrounds',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -237,3 +238,17 @@ SOCIALACCOUNT_ADAPTER = 'mp_resource.users.adapters.SocialAccountAdapter'
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+# ############## OAUTH SETTINGS ###################
+
+OAUTH2_PROVIDER = {
+    'RESOURCE_SERVER_INTROSPECTION_URL': 'http://localhost:8000/o/introspect/',
+}
