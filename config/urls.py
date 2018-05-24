@@ -23,6 +23,7 @@ urlpatterns = [
     ),
     path("accounts/", include("allauth.urls")),
     path("test/", ApiEndpoint.as_view(), name='tests'),
+    path("api/", include('config.api_urls', namespace='api')),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )
