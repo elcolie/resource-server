@@ -1,0 +1,5 @@
+[run]
+include = mp_resource/*
+omit = *migrations*, *tests*
+plugins =
+    django_coverage_plugin
